@@ -22,7 +22,8 @@ Research Experiences
 ======
 1. LLM-based Multi-Agent System & Agent Memory
   - G-Memory: Tracing Hierarchical Memory for Multi-Agent Systems
-  - Guibin Zhang*, Muxin Fu*, Guancheng Wan, Miao Yu, Kun Wang, Shuicheng Yan
+  - Guibin Zhang†, Muxin Fu†, Guancheng Wan, Miao Yu, Kun Wang, Shuicheng Yan
+  - *https://arxiv.org/abs/2506.07398*
 
 2. LLM Interpretability Based on Interactive Game Theory 
   - Advisor: Prof. Quanshi Zhang, Shanghai Jiao Tong University  
