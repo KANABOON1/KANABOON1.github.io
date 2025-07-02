@@ -1,5 +1,5 @@
 /* ==========================================================================
-   DARK THEME
+   DARK THEME (Updated for darker background)
    ========================================================================== */
 
 /* Color codes used for the theme */
@@ -8,9 +8,10 @@ $dark-gray                  : mix(#000, $gray, 40%);
 $darker-gray                : mix(#000, $gray, 60%);
 $light-gray                 : mix(#fff, $gray, 50%);
 
-$background                 : #474747;
-$background-light           : mix(#fff, $background, 80%);
-$background-lighter         : mix(#fff, $background, 90%);
+
+$background                 : #2b2b2b; 
+$background-light           : mix(#fff, $background, 70%); 
+$background-lighter         : mix(#fff, $background, 85%); 
 $text                       : #ffffff;
 $link                       : #0ea1c5;
 $link-dark                  : mix(#000, $link, 25%);
@@ -33,6 +34,9 @@ $navicon-height             : 4px;
 $sidebar-link-max-width     : 250px;
 $sidebar-screen-min-width   : 1024px;
 
+/* Color code used for the cards */
+$card-bg-color: rgba(53, 53, 53, 1);
+
 /* Dark theme for the site */
 html[data-theme="dark"] {
     --global-base-color                 : #{$background};
@@ -51,4 +55,5 @@ html[data-theme="dark"] {
     --global-text-color                 : #{$text};
     --global-text-color-light           : #{$light-gray};
     --global-thead-color                : #{$background-lighter};
+    --global-card-color                 : #{$card-bg-color};
 }

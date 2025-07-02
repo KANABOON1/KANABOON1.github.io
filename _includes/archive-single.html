@@ -83,7 +83,7 @@
   </article>
 </div> -->
 
-{% include base_path %}
+<!-- {% include base_path %}
 
 <div class="publication-card">
   <div class="publication-content">
@@ -91,22 +91,66 @@
       {{ post.title }}
     </h2>
 
-    {% if post.excerpt %}
-      <div class="publication-excerpt">
-        {{ post.excerpt | markdownify }}
+    {% if post.authors %}
+      <p class="publication-authors">
+        {{ post.authors }}
+      </p>
+    {% endif %}
+
+    {% if post.venue %}
+      <p class="publication-venue">
+        {{ post.venue }}, {{ post.year }}
+      </p>
+    {% endif %}
+
+    <div class="publication-links">
+      {% if post.paperurl %}
+        <a href="{{ post.paperurl }}" target="_blank" class="publication-link">PDF</a>
+      {% endif %}
+      {% if post.codeurl %}
+        <a href="{{ post.codeurl }}" target="_blank" class="publication-link">Code</a>
+      {% endif %}
+    </div>
+  </div>
+</div> -->
+
+{% include base_path %}
+
+<div class="publication-card">
+  <div class="publication-flex-container">
+    <!-- 左侧图片区域 -->
+    {% if post.image %}
+      <div class="publication-image">
+        <img src="{{ post.image }}" alt="Thumbnail for {{ post.title }}">
       </div>
     {% endif %}
 
-    <div class="publication-meta">
-      <ul>
-        <li><strong>Date:</strong> {{ post.date | date: "%B %d, %Y" }}</li>
+    <!-- 右侧文字内容区域 -->
+    <div class="publication-content">
+      <h2 class="publication-title">
+        {{ post.title }}
+      </h2>
+
+      {% if post.authors %}
+        <p class="publication-authors">
+          {{ post.authors }}
+        </p>
+      {% endif %}
+
+      {% if post.venue %}
+        <p class="publication-venue">
+          {{ post.venue }}, {{ post.year }}
+        </p>
+      {% endif %}
+
+      <div class="publication-links">
         {% if post.paperurl %}
-          <li>
-            <strong>URL:</strong> 
-            <a href="{{ post.paperurl }}" target="_blank">arXiv Link</a>
-          </li>
+          <a href="{{ post.paperurl }}" target="_blank" class="publication-link">PDF</a>
         {% endif %}
-      </ul>
+        {% if post.codeurl %}
+          <a href="{{ post.codeurl }}" target="_blank" class="publication-link">Code</a>
+        {% endif %}
+      </div>
     </div>
   </div>
 </div>

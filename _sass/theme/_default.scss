@@ -25,6 +25,7 @@ $navicon-width              : 28px;
 $navicon-height             : 4px;
 $sidebar-link-max-width     : 250px;
 $sidebar-screen-min-width   : 1024px;
+$card-bg-color: rgba(255, 255, 255, 0.9);
 
 /* Default light theme for the site */
 :root {
@@ -44,4 +45,5 @@ $sidebar-screen-min-width   : 1024px;
     --global-text-color                 : #{$dark-gray};
     --global-text-color-light           : #{$light-gray};
     --global-thead-color                : #{$lighter-gray};
+    --global-card-color                 : #{$card-bg-color};
 }
