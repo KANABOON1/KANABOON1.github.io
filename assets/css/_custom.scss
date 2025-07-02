@@ -1,0 +1,51 @@
+.publication-card {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.publication-card:hover {
+  box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+}
+
+.publication-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.publication-title a {
+  text-decoration: none;
+  color: #2c3e50;
+}
+
+.publication-title a:hover {
+  color: #007acc;
+}
+
+.publication-excerpt {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+.publication-meta {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.publication-links a {
+  margin-right: 10px;
+  font-size: 0.9rem;
+  color: #007acc;
+  text-decoration: none;
+}
+
+.publication-links a:hover {
+  text-decoration: underline;
+}
