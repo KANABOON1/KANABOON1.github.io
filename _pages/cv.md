@@ -11,54 +11,23 @@ redirect_from:
 
 Education
 ======
-* Ph.D in Version Control Theory, GitHub University, 2018 (expected)
-* M.S. in Jekyll, GitHub University, 2014
-* B.S. in GitHub, GitHub University, 2012
+* B.Eng. Candidate in Data Science, Tongji University
 
-Work experience
+Honours
 ======
-* Spring 2024: Academic Pages Collaborator
-  * GitHub University
-  * Duties includes: Updates and improvements to template
-  * Supervisor: The Users
+* National Scholarship for the 2022–2023 Academic Year(national-wide, 0.2%)
+* Outstanding Undergraduate Student of Tongji University, Academic Year 2022–2023
+  
+Research Experiences
+======
+1. LLM-based Multi-Agent System & Agent Memory
+   *Advisor: Dr. Kun Wang, Nanyang Technological University*  
+   Co-first author submission to **NeurIPS 2025**  
+   **Title:** *G-Memory: Tracing Hierarchical Memory for Multi-Agent Systems*
 
-* Fall 2015: Research Assistant
-  * GitHub University
-  * Duties included: Merging pull requests
-  * Supervisor: Professor Hub
+2. LLM Interpretability Based on Interactive Game Theory 
+   *Advisor: Prof. Quanshi Zhang, Shanghai Jiao Tong University*  
+   Modeled the relationships between pairs of LLM input elements as **AND**/**OR** interactions, and computed interaction values using game-theoretic interaction theory.
 
-* Summer 2015: Research Assistant
-  * GitHub University
-  * Duties included: Tagging issues
-  * Supervisor: Professor Git
-  
-Skills
+Projects
 ======
-* Skill 1
-* Skill 2
-  * Sub-skill 2.1
-  * Sub-skill 2.2
-  * Sub-skill 2.3
-* Skill 3
-
-Publications
-======
-  <ul>{% for post in site.publications reversed %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Talks
-======
-  <ul>{% for post in site.talks reversed %}
-    {% include archive-single-talk-cv.html  %}
-  {% endfor %}</ul>
-  
-Teaching
-======
-  <ul>{% for post in site.teaching reversed %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Service and leadership
-======
-* Currently signed in to 43 different slack teams
