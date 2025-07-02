@@ -86,17 +86,27 @@
 {% include base_path %}
 
 <div class="publication-card">
-  <h2 class="publication-title">{{ post.title }}</h2>
-  
-  {% if post.excerpt %}
-    <p class="publication-excerpt">{{ post.excerpt | markdownify }}</p>
-  {% endif %}
-  
-  <div class="publication-meta">
-    Date: {{ post.date | date: "%B %d, %Y" }} |
-    {% if post.read_time %}
-      Estimated Reading Time: {{ post.read_time }} min |
+  <div class="publication-content">
+    <h2 class="publication-title">
+      {{ post.title }}
+    </h2>
+
+    {% if post.excerpt %}
+      <div class="publication-excerpt">
+        {{ post.excerpt | markdownify }}
+      </div>
     {% endif %}
-    Author: {{ post.author }}
+
+    <div class="publication-meta">
+      <ul>
+        <li><strong>Date:</strong> {{ post.date | date: "%B %d, %Y" }}</li>
+        {% if post.paperurl %}
+          <li>
+            <strong>URL:</strong> 
+            <a href="{{ post.paperurl }}" target="_blank">arXiv Link</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
   </div>
 </div>
