@@ -21,13 +21,12 @@ Honours
 Research Experiences
 ======
 1. LLM-based Multi-Agent System & Agent Memory
-   *Advisor: Dr. Kun Wang, Nanyang Technological University*  
-   Co-first author submission to **NeurIPS 2025**  
-   **Title:** *G-Memory: Tracing Hierarchical Memory for Multi-Agent Systems*
+  - G-Memory: Tracing Hierarchical Memory for Multi-Agent Systems
+  - Guibin Zhang*, Muxin Fu*, Guancheng Wan, Miao Yu, Kun Wang, Shuicheng Yan
 
 2. LLM Interpretability Based on Interactive Game Theory 
-   *Advisor: Prof. Quanshi Zhang, Shanghai Jiao Tong University*  
-   Modeled the relationships between pairs of LLM input elements as **AND**/**OR** interactions, and computed interaction values using game-theoretic interaction theory.
+  - Advisor: Prof. Quanshi Zhang, Shanghai Jiao Tong University  
+  - Modeled the relationships between pairs of LLM input elements as **AND**/**OR** interactions, and computed interaction values using game-theoretic interaction theory.
 
 Projects
 ======
