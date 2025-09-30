@@ -70,7 +70,7 @@
 
 .publication-flex-container {
   display: flex;
-  align-items: flex-start;
+  align-items: center; /* 改为 center，而不是 flex-start */
   gap: 16px;
 }
 

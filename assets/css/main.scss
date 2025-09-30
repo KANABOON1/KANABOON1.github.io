@@ -1,5 +1,6 @@
 ---
 ---
+$chinese-english-font-stack: "Times New Roman", "Microsoft YaHei", "微软雅黑", serif;
 
 /*
  * This file controls what is imported from /_sass
@@ -7,8 +8,18 @@
  * Note that the files are processed in the order they are imported, so they are partly
    sorted by the dependencies. Also, the first two lines of the file are required by Jekyll.
  */
-body {
-  font-family: 'Times New Roman', Times, serif;
+
+/* 应用于正文中的所有标题 (H1, H2, H3 等) */
+.page-content h1,
+.page-content h2,
+.page-content h3,
+.page-content h4,
+.entry-content h1,
+.entry-content h2 {
+    // 确保标题也使用相同的字体栈
+    font-family: $chinese-english-font-stack;
+    // 如果你希望标题更突出，可以在这里单独设置粗细
+    // font-weight: 700; 
 }
 @import
     "vendor/breakpoint/breakpoint",
@@ -43,5 +54,116 @@ body {
     "vendor/font-awesome/brands",
     "vendor/magnific-popup/magnific-popup",
     
-    "layout/publication"
+    "layout/publication",
+    "layout/blog"
 ;
+
+
+/* 针对文章正文的强制覆盖 */
+.page-content,
+.entry-content,
+.single-post-content,
+body {
+    /* 强制设置中英文衬线体 */
+  font-family: $chinese-english-font-stack;
+  font-size: 0.85em; 
+}
+
+
+/* 针对文章 H1, H2, H3 的强制覆盖 */
+.page-content h1,
+.page-content h2,
+.page-content h3,
+.entry-content h1,
+.entry-content h2 {
+  font-family: $chinese-english-font-stack;
+}
+
+
+/* 🎯 针对 H4 的单独修复规则 (使用 rem，现在 rem 基于 16px 计算) */
+.page-content h4 {
+    font-size: 1.25rem !important;
+    font-weight: bold;
+    font-family: $chinese-english-font-stack; /* 确保字体栈也被应用 */
+}
+
+/* markdown table of content */
+#markdown-toc {
+  background: var(--global-card-color, #ffffff);
+  border: 1px solid var(--global-card-color, #e0e0e0);
+  border-radius: 12px;
+  padding: 8px 12px;
+  margin: 16px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+  font-size: 0.9rem;
+
+  &:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  /* 目录标题 */
+  &::before {
+    content: "Table of Contents";
+    display: block;
+    font-weight: bold;
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+    color: var(--global-text-color, #2c3e50);
+    font-family: "Times New Roman", Times, serif;
+  }
+
+  /* 列表样式 */
+  ul,
+  li {
+    list-style: none;
+    margin: 0;
+    padding-left: 0.6rem;
+  }
+
+  /* 通用符号样式 */
+  li::before {
+    display: inline-block;
+    width: 2em;   /* 控制符号占位宽度 */
+    text-align: center;
+  }
+
+  /* 一级目录符号 */
+  > li::before {
+    content: "●";
+    color: var(--global-link-color-hover, #007acc);
+    font-weight: bold;
+  }
+
+  /* 二级目录符号 */
+  li li::before {
+    content: "○";
+    color: var(--global-text-color-light, #555);
+  }
+
+  /* 三级目录符号 */
+  li li li::before {
+    content: "■";
+    color: var(--global-link-color-hover, #007acc);
+    font-size: 0.8rem;
+  }
+
+  /* 链接样式 */
+  a {
+    text-decoration: none;
+    color: var(--global-text-color, #2c3e50);
+
+    &:hover {
+      color: var(--global-link-color-hover, #007acc);
+      text-decoration: underline;
+    }
+  }
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+  #markdown-toc {
+    font-size: 0.85rem;
+    padding: 8px;
+  }
+}

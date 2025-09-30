@@ -1,10 +1,11 @@
 {% include base_path %}
 
 <div class="blog-card">
-  <a href="{{ post.url | relative_url }}" class="blog-link-wrapper">
     <div class="blog-content">
       <h2 class="blog-title">
-        {{ post.title }}
+        <a href="{{ post.url | relative_url }}" class="blog-link-wrapper">
+          {{ post.title }}
+        </a>
       </h2>
 
       <p class="blog-excerpt">
@@ -28,5 +29,4 @@
         </span>
       </p>
     </div>
-  </a>
 </div>
