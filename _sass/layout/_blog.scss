@@ -1,0 +1,86 @@
+/* --- SCSS for Blog Card Layout --- */
+
+// 颜色变量
+$dark-bg: #222222; // 卡片深色背景
+$text-color: #f0f0f0; // 主要文本亮色
+$title-color: #ffffff; // 标题颜色 (纯白)
+$meta-color: #aaaaaa; // 元信息（日期/作者）颜色
+
+// 基础排版和间距
+$card-padding: 1.5rem;
+$meta-font-size: 0.85rem;
+
+.blog-card {
+  // 核心卡片样式
+  background-color: $dark-bg;
+  border-radius: 8px; // 轻微圆角
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); // 明显的阴影，增加深度感
+  margin-bottom: 2rem; // 卡片间距
+
+  // 悬停效果 (可选: 增加交互感)
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  &:hover {
+    transform: translateY(-2px); // 稍微上浮
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7); // 阴影更明显
+  }
+
+  // 确保卡片内的链接样式被覆盖
+  .blog-link-wrapper {
+    display: block; // 使链接占据整个卡片
+    text-decoration: none; // 移除下划线
+    color: inherit; // 继承颜色
+  }
+}
+
+.blog-content {
+  padding: $card-padding;
+}
+
+// --- 标题样式 ---
+.blog-title {
+  color: $title-color;
+  font-size: 1.8rem; // 较大的标题
+  font-weight: 700; // 粗体
+  line-height: 1.2;
+  margin-top: 0; // 移除顶部边距
+  margin-bottom: 1rem; // 与摘要分隔
+}
+
+// --- 摘要/简介样式 ---
+.blog-excerpt {
+  color: $text-color;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem; // 与元信息分隔
+  
+  // 限制文本行数，保持整洁（可选）
+  /*
+  display: -webkit-box;
+  -webkit-line-clamp: 3; // 限制为3行
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  */
+}
+
+// --- 元信息样式 (日期, 阅读时间, 作者) ---
+.blog-meta {
+  color: $meta-color;
+  font-size: $meta-font-size;
+  margin-top: 0;
+  margin-bottom: 0; // 底部无额外间距
+  
+  // 确保所有元信息项都在同一行并使用管道符分隔
+  .meta-item {
+    white-space: nowrap; // 防止换行
+  }
+}
+
+// 响应式设计 (可选：在小屏幕上调整标题大小)
+@media (max-width: 768px) {
+  .blog-title {
+    font-size: 1.5rem;
+  }
+  .blog-card {
+    margin-bottom: 1.5rem;
+  }
+}

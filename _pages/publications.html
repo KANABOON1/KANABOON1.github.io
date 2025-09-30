@@ -27,9 +27,12 @@ author_profile: true
     {% endfor %}
   {% endfor %}
 {% else %}
+  <!-- publications 渲染 -->
   {% for post in site.publications reversed %}
-    <!-- 将 post 注入到 archive-single 中进行渲染 -->
     {% include archive-single.html %}
+  <!-- blogs 渲染 -->
+  {% for post in site.posts reversed %}
+    {% include archive-single-post.html}
   {% endfor %}
 {% endif %}
 
