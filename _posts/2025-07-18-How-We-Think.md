@@ -5,14 +5,15 @@ permalink: /posts/how-we-think/
 read_time: 40
 author: Muxin Fu
 tags:
-  - Test Time Compute
+  - Test-Time Compute
   - Multimodal
-description: 'AI model 往往缺乏自主的 "pause and think" 能力, 他们的回答主要依赖于预训练时学习到的固定的回答模式, 这种模式通常被称为 *System 1 reasoning*。与之相对,  *System 2 reasoning* 更接近人类的思维方式...'
+description: 'AI model 往往缺乏自主的 "pause and think" 能力, 他们的回答主要依赖于预训练时学习到的固定的回答模式, 这种模式通常被称为 System 1 reasoning。与之相对, System 2 reasoning 更接近人类的思维方式...'
 ---
 
 * TOC
 {:toc}
 
+***Special thanks to [Lilian Weng](https://scholar.google.com/citations?user=dCa-pW8AAAAJ&hl=en) for her inspiring blog posts, which motivated me to start writing my own.***
 
 # Motivation
 AI model 往往缺乏自主的 "pause and think" 能力, 他们的回答主要依赖于预训练时学习到的固定的回答模式, 这种模式通常被称为 *System 1 reasoning*。与之相对,  *System 2 reasoning* 更接近人类的思维方式: 一个真正具备推理能力的模型, 应能够根据题目的难度, 动态地分配合适的 *computational resource* —— 在简单的问题上花费少量的计算资源, 在困难的问题上花费较多的计算资源。
