@@ -1,6 +1,5 @@
 ---
 ---
-$chinese-english-font-stack: "Times New Roman", "Microsoft YaHei", "微软雅黑", serif;
 
 /*
  * This file controls what is imported from /_sass
@@ -9,18 +8,6 @@ $chinese-english-font-stack: "Times New Roman", "Microsoft YaHei", "微软雅黑
    sorted by the dependencies. Also, the first two lines of the file are required by Jekyll.
  */
 
-/* 应用于正文中的所有标题 (H1, H2, H3 等) */
-.page-content h1,
-.page-content h2,
-.page-content h3,
-.page-content h4,
-.entry-content h1,
-.entry-content h2 {
-    // 确保标题也使用相同的字体栈
-    font-family: $chinese-english-font-stack;
-    // 如果你希望标题更突出，可以在这里单独设置粗细
-    // font-weight: 700; 
-}
 @import
     "vendor/breakpoint/breakpoint",
 
@@ -65,18 +52,8 @@ $chinese-english-font-stack: "Times New Roman", "Microsoft YaHei", "微软雅黑
 .single-post-content,
 body {
     /* 强制设置中英文衬线体 */
-  font-family: $chinese-english-font-stack;
+  // font-family: $chinese-english-font-stack;
   font-size: 0.85em; 
-}
-
-
-/* 针对文章 H1, H2, H3 的强制覆盖 */
-.page-content h1,
-.page-content h2,
-.page-content h3,
-.entry-content h1,
-.entry-content h2 {
-  font-family: $chinese-english-font-stack;
 }
 
 
@@ -84,7 +61,6 @@ body {
 .page-content h4 {
     font-size: 1.25rem !important;
     font-weight: bold;
-    font-family: $chinese-english-font-stack; /* 确保字体栈也被应用 */
 }
 
 /* markdown table of content */
@@ -139,13 +115,16 @@ body {
   li li::before {
     content: "○";
     color: var(--global-text-color-light, #555);
+    font-size: 0.5rem;
+    width: 4em;   /* 控制符号占位宽度 */
   }
 
   /* 三级目录符号 */
   li li li::before {
     content: "■";
     color: var(--global-link-color-hover, #007acc);
-    font-size: 0.8rem;
+    font-size: 0.5rem;
+    width: 4em;   /* 控制符号占位宽度 */
   }
 
   /* 链接样式 */

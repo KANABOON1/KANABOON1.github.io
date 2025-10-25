@@ -35,8 +35,10 @@
 }
 
 .page__title {
-  margin-top: 0;
-  line-height: 1;
+  font-size: 2rem; /* 调大标题字体，可根据需求调整 */
+  font-weight: bold;
+  line-height: 1;  /* 可选：调整行高 */
+  margin-bottom: 1rem; /* 可选：标题下方空隙 */
 
   & + .page__meta {
     margin-top: -0.5em;
