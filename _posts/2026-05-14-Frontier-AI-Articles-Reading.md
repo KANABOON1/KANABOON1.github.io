@@ -77,16 +77,14 @@ description: 'AI 前沿文章阅读笔记，记录 papers、research blogs、tec
 
 <div class="frontier-reading-post" markdown="1">
 
-这篇 blog 用来记录我对 AI 前沿文章的阅读笔记。内容不局限于 paper，也包括 research blog、technical report、benchmark report、开源项目 release note 等。
-
-每篇笔记不会逐段复述原文，而是重点整理文章的 motivation、核心方法、实验结果、个人理解，以及可能延伸出的研究问题。
+这篇 blog 用来记录我对 AI 前沿文章的阅读笔记。内容不局限于 paper，也包括 research blog、technical report、benchmark report、开源项目。
 
 # Reading Index
 
-| No. | Article | Source | Topic | Date | Why it matters |
+| No. | Article | Source | Topic | Why it matters |
 |---|---|---|---|---|---|
-| 001 | Interaction Models: A Scalable Approach to Human-AI Collaboration | Thinking Machines Lab | Human-AI Interaction | 2026-05 | Realtime interaction may become an important model capability axis. |
-| 002 | On-Policy Distillation | Thinking Machines Lab | Post-training | 2025-10 | On-policy distillation combines student-sampled trajectories with dense teacher supervision. |
+| 001 | Interaction Models: A Scalable Approach to Human-AI Collaboration | Thinking Machines Lab | Human-AI Interaction | Realtime interaction may become an important model capability axis. |
+| 002 | On-Policy Distillation | Thinking Machines Lab | Post-training | On-policy distillation combines student-sampled trajectories with dense teacher supervision. |
 
 # [Reading Note 001] Interaction Models: A Scalable Approach to Human-AI Collaboration [1]
 
