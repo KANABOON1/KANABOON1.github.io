@@ -13,3 +13,7 @@ node_modules
 package-lock.json
 tests/
 .vscode/
+
+# Temporarily ignore the foundation paper reading post and images
+_posts/2026-05-29-Foundation-Papers-Reading.md
+assets/posts/foundation-paper-reading/
