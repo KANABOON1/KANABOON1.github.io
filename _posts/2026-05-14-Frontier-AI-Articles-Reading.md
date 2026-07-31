@@ -104,7 +104,7 @@ AI labs 经常将模型的自主运行能力视为最重要的能力。然而在
 整个系统分为两个部分: interaction model 和 background model [1]。interaction model 始终保持与用户的交互; 当问题超出简单推理的范围时, interaction model 会将任务交给后台异步运行的 background model (与 planner-executor 机制相同), 同时继续与用户交互, 并能够将 background model 返回的结果融入后续对话中。
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/frontier-ai-articles-reading/1_system.png" alt="System overview">
-  <figcaption>Figure 1: System overview of the interaction model and the background model. (Image source: Thinking Machines Lab, "Interaction Models: A Scalable Approach to Human-AI Collaboration")</figcaption>
+  <figcaption>Figure 1: System overview of the interaction model and the background model.<br>(Image source: Thinking Machines Lab, "Interaction Models: A Scalable Approach to Human-AI Collaboration")</figcaption>
 </figure>
 
 ### *The interaction model*
@@ -112,20 +112,20 @@ AI labs 经常将模型的自主运行能力视为最重要的能力。然而在
 ***Time-aligned micro-turns.*** 模型具备交互性的核心特征在于能够: perceiving and responding at the same time. 基于这个 insight, interaction model 的核心机制是 **Time-aligned micro-turns**。也就是说, 系统每 200ms 都会将这一阶段的用户内容输入给模型, 使模型的输入与输出交错在同一个序列中。这样一来, 在用户说话时, 模型也能持续感知, 并生成回应、插话、沉默等行为。本质上这仍然是 turn, 只是这个 turn 足够小, 能够满足模型与用户实时交互的需求。
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/frontier-ai-articles-reading/1_micro_time.png" alt="Time-aligned micro-turns">
-  <figcaption>Figure 2: Time-aligned micro-turns interleave user input and model output in a shared temporal sequence. (Image source: Thinking Machines Lab, "Interaction Models: A Scalable Approach to Human-AI Collaboration")</figcaption>
+  <figcaption>Figure 2: Time-aligned micro-turns interleave user input and model output in a shared temporal sequence.<br>(Image source: Thinking Machines Lab, "Interaction Models: A Scalable Approach to Human-AI Collaboration")</figcaption>
 </figure>
 
 ***Encoder-free early fusion.*** 相比于传统模型的目标, 即 "理解内容是什么", interaction model 的目标是 "在连续互动中, 判断现在应该怎么协调行动", 两者之间存在显著差异。预训练好的 encoder 更注重提取关键信息, 往往会忽略对连续互动有帮助的细节 (例如: 时间、犹豫等)。因此, TML 采用的策略是让模型一开始就从统一序列中联合建模所有模态与时间。
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/frontier-ai-articles-reading/1_fusion.png" alt="Encoder-free early fusion">
-  <figcaption>Figure 3: Encoder-free early fusion jointly models modalities and timing from the beginning of the sequence. (Image source: Thinking Machines Lab, "Interaction Models: A Scalable Approach to Human-AI Collaboration")</figcaption>
+  <figcaption>Figure 3: Encoder-free early fusion jointly models modalities and timing from the beginning of the sequence.<br>(Image source: Thinking Machines Lab, "Interaction Models: A Scalable Approach to Human-AI Collaboration")</figcaption>
 </figure>
 
 ## Experiments
 TML 分别使用 *FD-bench* 衡量模型的 *interaction quality*, 使用 *Audio MultiChallenge* 衡量模型的 *intelligence*。结果如下图所示, 可以看到 TML-small 模型在交互质量上远超其他模型, 但在智力上略低于 GPT realtime-2.0:
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/frontier-ai-articles-reading/1_exist_bench.png" alt="FD-bench and Audio MultiChallenge benchmark results">
-  <figcaption>Figure 4: Comparison on FD-bench for interaction quality and Audio MultiChallenge for intelligence. (Image source: Thinking Machines Lab, "Interaction Models: A Scalable Approach to Human-AI Collaboration")</figcaption>
+  <figcaption>Figure 4: Comparison on FD-bench for interaction quality and Audio MultiChallenge for intelligence.<br>(Image source: Thinking Machines Lab, "Interaction Models: A Scalable Approach to Human-AI Collaboration")</figcaption>
 </figure>
 
 为了进一步衡量模型的交互能力, TML 从两个角度对模型进行测试:
@@ -135,7 +135,7 @@ TML 分别使用 *FD-bench* 衡量模型的 *interaction quality*, 使用 *Audio
 可以看到, 在 interaction 能力上, TML-interaction-small 模型远超 GPT realtime-2.0。
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/frontier-ai-articles-reading/1_new_bench.png" alt="Interaction benchmark results">
-  <figcaption>Figure 5: Evaluation of time awareness, simultaneous speech, and visual proactivity. (Image source: Thinking Machines Lab, "Interaction Models: A Scalable Approach to Human-AI Collaboration")</figcaption>
+  <figcaption>Figure 5: Evaluation of time awareness, simultaneous speech, and visual proactivity.<br>(Image source: Thinking Machines Lab, "Interaction Models: A Scalable Approach to Human-AI Collaboration")</figcaption>
 </figure>
 
 
@@ -165,7 +165,7 @@ on-policy training via reinforcement learning. on-policy RL 的方法的优点�
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/frontier-ai-articles-reading/2_compare.png" alt="Comparison between SFT, RL, and on-policy distillation">
-  <figcaption>Figure 6: Comparison between off-policy distillation, reinforcement learning, and on-policy distillation. (Image source: Thinking Machines Lab, "On-Policy Distillation")</figcaption>
+  <figcaption>Figure 6: Comparison between off-policy distillation, reinforcement learning, and on-policy distillation.<br>(Image source: Thinking Machines Lab, "On-Policy Distillation")</figcaption>
 </figure>
 
 ## Methodology
@@ -210,26 +210,26 @@ training_client.forward_backward(trajectories, loss_fn="importance_sampling")
 首先对 `Qwen3-8B-Base` 模型进行 mid-training, 得到性能-数据量曲线如下. 可以看到, 无论是全参数还是使用 LoRA, 性能都随着数据量实现了线性对数增长:
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/frontier-ai-articles-reading/2_mid_train.png" alt="Mid-training performance scaling">
-  <figcaption>Figure 7: Mid-training performance scales with the amount of training data for full fine-tuning and LoRA. (Image source: Thinking Machines Lab, "On-Policy Distillation")</figcaption>
+  <figcaption>Figure 7: Mid-training performance scales with the amount of training data for full fine-tuning and LoRA.<br>(Image source: Thinking Machines Lab, "On-Policy Distillation")</figcaption>
 </figure>
 
 接下来, 以 400K 数据量的 checkpoint 作为出发点, 向后进行了一系列的对比实验。可以看出, on-policy distillation 在取得最好效果的同时, 其训练 compute cost 也明显低于 RL 方法.
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/frontier-ai-articles-reading/2_cost_compare.png" alt="Compute cost comparison between SFT, RL, and on-policy distillation">
-  <figcaption>Figure 8: Performance and compute cost comparison across SFT, RL, and on-policy distillation. (Image source: Thinking Machines Lab, "On-Policy Distillation")</figcaption>
+  <figcaption>Figure 8: Performance and compute cost comparison across SFT, RL, and on-policy distillation.<br>(Image source: Thinking Machines Lab, "On-Policy Distillation")</figcaption>
 </figure>
 
 相比于 RL, on-policy distillation 的优势体现在以下几个方面:
-- **Dense supervision greatly improves compute efficiency.** on-policy distillation 和 RL 都是通过 reverse KL 学习, 以此剪枝基础策略中存在的动作空间. 两者的区别在于奖励信号的稠密程度: RL 中的稠密程度为 $O(1)$; OPD 中的稠密程度为 $O(N)$. 由于这个优势, OPD 相比于 RL 需要更少的梯度更新就能取得更好的效果:
+- **Dense supervision greatly improves compute efficiency.** on-policy distillation 和 RL 都是通过 reverse KL 学习, 以此剪枝基础策略中存在的动作空间. 两者的区别在于奖励信号的稠密程度: RL 中的稠密程度为 $$O(1)$$; OPD 中的稠密程度为 $$O(N)$$. 由于这个优势, OPD 相比于 RL 需要更少的梯度更新就能取得更好的效果:
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/frontier-ai-articles-reading/2_efficiency.png" alt="Compute efficiency comparison between RL and on-policy distillation">
-  <figcaption>Figure 9: Dense token-level supervision helps on-policy distillation reach strong performance with fewer updates. (Image source: Thinking Machines Lab, "On-Policy Distillation")</figcaption>
+  <figcaption>Figure 9: Dense token-level supervision helps on-policy distillation reach strong performance with fewer updates.<br>(Image source: Thinking Machines Lab, "On-Policy Distillation")</figcaption>
 </figure>
 
 - **Distillation can effectively reuse training data for data efficiency.** 收集大规模训练的数据集可能昂贵又耗时, 因此我们希望能够重复利用已有数据集中的提示词。然而, 使用 RL 方法如果多次重复提示词, 模型往往会死记硬背最终答案; 而 OPD 则是让 student model 逼近 teacher model 的分布, 而不是记住最终答案, 因此可以多次利用同一个样本. 这里做了个有趣的实验: 在同一个 prompt 上连续训练 20 steps, 每一个 step 的 batch size 为 256, 发现 student model 仍然可以大致达到 teacher model 的水平:
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/frontier-ai-articles-reading/2_data.png" alt="Training on repeated prompts with on-policy distillation">
-  <figcaption>Figure 10: On-policy distillation can reuse prompts while continuing to sample fresh student trajectories. (Image source: Thinking Machines Lab, "On-Policy Distillation")</figcaption>
+  <figcaption>Figure 10: On-policy distillation can reuse prompts while continuing to sample fresh student trajectories.<br>(Image source: Thinking Machines Lab, "On-Policy Distillation")</figcaption>
 </figure>
 
 - **RL searches in the space of semantic strategies.** RL 仍然通过梯度更新模型参数, 但它的有效搜索对象更接近语义策略: 模型通过 rollout 发现某类解题路径, reward 再把这些路径强化到参数中。这个过程需要反复采样、评估和 credit assignment, 因而 compute cost 较高。一旦 RL 找到了一个好策略, 则可以用 OPD 直接蒸馏学习 RL 找到的最终策略, 而不需要重走 RL 发现语义策略的完整过程, 这减少了大量的开销。我们可以打个比方: 在科学研究中, 我们花费了大量的时间和资源去寻找答案和探索新想法。一旦某个结果被发现, 通过自然语言将其表达出来并传授给他人就会简单得多。
@@ -237,7 +237,7 @@ training_client.forward_backward(trajectories, loss_fn="importance_sampling")
 - **On-policy learning as a tool for continual learning.** On-policy learning 相比于 off-policy learning 更不容易产生遗忘。然而, RL 只能用于规范模型的行为 (只能判断模型生成的内容的对错, 并不能直接注入新的领域知识); 而 SFT 之所以很难作为持续学习的框架, 是因为固定数据集会很快变成 off-policy 数据。即使数据集最初完全由模型自身输出构建, 单个 finite batch 的分布也不会和模型完整分布完全一致, 因此每个 batch 都会带来非零参数更新。模型一旦被更新, 后续尚未训练的数据就不再严格来自当前模型分布, 这种偏差会随着 batch 更新逐步累积, 最终损害模型既有行为。OPD 的关键在于持续从当前 student model 采样轨迹, 再用固定 teacher model 给这些当前轨迹打分, 因而可以在提供 dense supervision 的同时保持 on-policy。
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/frontier-ai-articles-reading/2_on_policy_sft.png" alt="Comparison between on-policy distillation and on-policy SFT">
-  <figcaption>Figure 11: On-policy distillation avoids the distribution drift that can appear when SFT reuses a fixed self-generated dataset. (Image source: Thinking Machines Lab, "On-Policy Distillation")</figcaption>
+  <figcaption>Figure 11: On-policy distillation avoids the distribution drift that can appear when SFT reuses a fixed self-generated dataset.<br>(Image source: Thinking Machines Lab, "On-Policy Distillation")</figcaption>
 </figure>
 
 ## Future Work

@@ -87,7 +87,7 @@ description: '流视频理解需要在实时交互的同时, 高效处理持续�
 
 在 KV-cache 层进行压缩, 可以直接复用 LLM 已经计算得到的 key 和 value, 从而较为方便地评估不同视觉 token 与当前文本上下文之间的相关性。此外, 由于不同 Transformer 层维护各自独立的 KV-cache, 这类方法可以让每一层根据自身的表示特征, 独立选择最适合保留或检索的视觉信息。
 
-*ReKV* [(Di et al., 2025)](https://openreview.net/forum?id=8g9fs6mdEG) 并不直接进行压缩, 而是进行检索。它首先完整保留当前视频中所有 visual tokens 对应的 KV-cache, 这一过程被称为 internal retrieval。当模型开始回答问题时, 每一层根据当前层的 hidden states $X$, 从该层保存的 visual KV-cache 中检索 Top-$K$ 个最相关的视觉 token, 并将其作为额外上下文参与注意力计算:
+*ReKV* [(Di et al., 2025)](https://openreview.net/forum?id=8g9fs6mdEG) 并不直接进行压缩, 而是进行检索。它首先完整保留当前视频中所有 visual tokens 对应的 KV-cache, 这一过程被称为 internal retrieval。当模型开始回答问题时, 每一层根据当前层的 hidden states $$X$$, 从该层保存的 visual KV-cache 中检索 Top-$$K$$ 个最相关的视觉 token, 并将其作为额外上下文参与注意力计算:
 
 $$
 O = \operatorname{Attn}\left(
@@ -99,19 +99,19 @@ $$
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/streaming-video-understanding-through-sparsity/rekv.png" alt="ReKV framework for in-context video KV-cache retrieval">
-  <figcaption>Figure 1: ReKV retrieves query-relevant visual KV-cache for streaming video question answering. (Image source: Di et al. 2025)</figcaption>
+  <figcaption>Figure 1: ReKV retrieves query-relevant visual KV-cache for streaming video question answering.<br>(Image source: Di et al. 2025)</figcaption>
 </figure>
 
-除了将 KV-cache 作为可检索的外部记忆, 也可以直接对其进行持续压缩。*LiveVLM* [(Ning et al., 2025)](https://arxiv.org/abs/2505.15269) 观察到 visual tokens 中存在类似 attention sink 的现象, 即大量视觉 token 会将较高的注意力分配给少数 sink visual tokens。因此, *LiveVLM* 使用 vision-to-vision attention score, 而不是 text-to-vision attention score, 计算每层 visual token 的重要性, 并在时间分桶的约束下选择需要保留的 token。该策略既维持了视频内容在时间维度上的覆盖, 又能够优先保留注意力得分较高的视觉信息。*InfiniPot-V* [(Kim et al., 2025)](https://arxiv.org/abs/2506.15745) 提出了一种受预算约束的持续 KV-cache 压缩机制。当缓存长度达到预设上限 $M$ 时, 每一层的 KV-cache 会被压缩至长度 $C$, 其中 $C \ll M$。具体而言, *InfiniPot-V* 首先沿时间维度执行稀疏化操作 TaR: 如果当前帧某一位置的 key 与历史帧相同位置的 key 具有较高相似度, 则认为该 token 包含重复信息并将其移除。随后, 方法沿空间维度执行 VaR: 优先保留 value norm 较大的 token。作者发现, value norm 较大的 token 通常具有更高的表示熵, 因此可能包含更丰富的信息。*HERMES* [(Zhang et al., 2026)](https://arxiv.org/abs/2601.14724) 则进一步研究了不同深度的 LLM 层对视觉信息的注意力模式。其分析表明, 浅层具有明显的近因偏好, 即模型更倾向于关注距离当前 token 较近的视觉 token; 随着网络深度增加, 这种近因偏好逐渐减弱。因此, *HERMES* 针对 shallow, middle 和 deep layers 分别设计了不同的 visual KV-cache 重要性评估规则, 并将 KV-cache 组织为 hierarchical memory, 以匹配不同层的注意力特性。此外, *HERMES* 提出了 M-RoPE 的位置重索引策略, 使压缩后保留下来的 token 在 M-RoPE 的三个坐标维度上重新保持连续。需要注意的是, 对于压缩后 token 的位置编码是否应当重索引, 目前不同工作采用了不同策略: 部分方法保留 token 的原始位置坐标, 另一些方法则重新构造连续的位置索引。
+除了将 KV-cache 作为可检索的外部记忆, 也可以直接对其进行持续压缩。*LiveVLM* [(Ning et al., 2025)](https://arxiv.org/abs/2505.15269) 观察到 visual tokens 中存在类似 attention sink 的现象, 即大量视觉 token 会将较高的注意力分配给少数 sink visual tokens。因此, *LiveVLM* 使用 vision-to-vision attention score, 而不是 text-to-vision attention score, 计算每层 visual token 的重要性, 并在时间分桶的约束下选择需要保留的 token。该策略既维持了视频内容在时间维度上的覆盖, 又能够优先保留注意力得分较高的视觉信息。*InfiniPot-V* [(Kim et al., 2025)](https://arxiv.org/abs/2506.15745) 提出了一种受预算约束的持续 KV-cache 压缩机制。当缓存长度达到预设上限 $$M$$ 时, 每一层的 KV-cache 会被压缩至长度 $$C$$, 其中 $$C \ll M$$。具体而言, *InfiniPot-V* 首先沿时间维度执行稀疏化操作 TaR: 如果当前帧某一位置的 key 与历史帧相同位置的 key 具有较高相似度, 则认为该 token 包含重复信息并将其移除。随后, 方法沿空间维度执行 VaR: 优先保留 value norm 较大的 token。作者发现, value norm 较大的 token 通常具有更高的表示熵, 因此可能包含更丰富的信息。*HERMES* [(Zhang et al., 2026)](https://arxiv.org/abs/2601.14724) 则进一步研究了不同深度的 LLM 层对视觉信息的注意力模式。其分析表明, 浅层具有明显的近因偏好, 即模型更倾向于关注距离当前 token 较近的视觉 token; 随着网络深度增加, 这种近因偏好逐渐减弱。因此, *HERMES* 针对 shallow, middle 和 deep layers 分别设计了不同的 visual KV-cache 重要性评估规则, 并将 KV-cache 组织为 hierarchical memory, 以匹配不同层的注意力特性。此外, *HERMES* 提出了 M-RoPE 的位置重索引策略, 使压缩后保留下来的 token 在 M-RoPE 的三个坐标维度上重新保持连续。需要注意的是, 对于压缩后 token 的位置编码是否应当重索引, 目前不同工作采用了不同策略: 部分方法保留 token 的原始位置坐标, 另一些方法则重新构造连续的位置索引。
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/streaming-video-understanding-through-sparsity/infinipot.png" alt="InfiniPot-V memory-constrained KV-cache compression framework">
-  <figcaption>Figure 2: InfiniPot-V removes temporal redundancy and preserves informative values under a fixed memory budget. (Image source: Kim et al. 2025)</figcaption>
+  <figcaption>Figure 2: InfiniPot-V removes temporal redundancy and preserves informative values under a fixed memory budget.<br>(Image source: Kim et al. 2025)</figcaption>
 </figure>
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/streaming-video-understanding-through-sparsity/hermes.png" alt="HERMES hierarchical KV-cache memory framework">
-  <figcaption>Figure 3: HERMES organizes visual KV-cache as hierarchical memory for layers with different attention patterns. (Image source: Zhang et al. 2026)</figcaption>
+  <figcaption>Figure 3: HERMES organizes visual KV-cache as hierarchical memory for layers with different attention patterns.<br>(Image source: Zhang et al. 2026)</figcaption>
 </figure>
 
 ## Visual Embedding Compression
@@ -122,46 +122,46 @@ Visual embedding compression 通常从时间和空间两个维度去除冗余的
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/streaming-video-understanding-through-sparsity/timechat-online.png" alt="TimeChat-Online differential token dropping framework">
-  <figcaption>Figure 4: TimeChat-Online removes temporally redundant visual tokens through differential token dropping. (Image source: Yao et al. 2025)</figcaption>
+  <figcaption>Figure 4: TimeChat-Online removes temporally redundant visual tokens through differential token dropping.<br>(Image source: Yao et al. 2025)</figcaption>
 </figure>
 
-*FluxMem* [(Xie et al., 2026)](https://arxiv.org/abs/2603.02096) 进一步将 visual memory 划分为 short-term memory, mid-term memory 和 long-term memory, 并针对不同时间尺度的记忆采用不同的压缩策略。Short-term memory 不进行压缩, 以完整保留最近的视觉信息。Mid-term memory 采用与 *TimeChat-Online* 类似的时间冗余判断方式, 通过比较相邻帧对应位置上的 visual embeddings 来筛除重复 token。相比 *TimeChat-Online*, *FluxMem* 主要进行了两点改进: (1) 不再仅比较完全相同位置上的 token, 而是在 $3 \times 3$ 的局部窗口中计算相似度; (2) 使用 Otsu 自适应阈值法 (see Appendix for more details) 确定冗余判断阈值, 而不是采用人工设定的固定阈值。Long-term memory 则进一步处理单帧内部的空间冗余。*FluxMem* 计算同一帧内不同 visual embeddings 之间的相似度, 并将相似度高于阈值的 token 连接起来。在完成整帧 token 的相似关系构建后, 每个连通分量中的 visual patch embeddings 会被聚合为其均值, 并以该均值作为新的 visual embedding。通过这种方式, 多个语义相近或空间冗余的 patch tokens 可以被合并为单个 token, 从而显著减少长期记忆中的 token 数量。
+*FluxMem* [(Xie et al., 2026)](https://arxiv.org/abs/2603.02096) 进一步将 visual memory 划分为 short-term memory, mid-term memory 和 long-term memory, 并针对不同时间尺度的记忆采用不同的压缩策略。Short-term memory 不进行压缩, 以完整保留最近的视觉信息。Mid-term memory 采用与 *TimeChat-Online* 类似的时间冗余判断方式, 通过比较相邻帧对应位置上的 visual embeddings 来筛除重复 token。相比 *TimeChat-Online*, *FluxMem* 主要进行了两点改进: (1) 不再仅比较完全相同位置上的 token, 而是在 $$3 \times 3$$ 的局部窗口中计算相似度; (2) 使用 Otsu 自适应阈值法 (see Appendix for more details) 确定冗余判断阈值, 而不是采用人工设定的固定阈值。Long-term memory 则进一步处理单帧内部的空间冗余。*FluxMem* 计算同一帧内不同 visual embeddings 之间的相似度, 并将相似度高于阈值的 token 连接起来。在完成整帧 token 的相似关系构建后, 每个连通分量中的 visual patch embeddings 会被聚合为其均值, 并以该均值作为新的 visual embedding。通过这种方式, 多个语义相近或空间冗余的 patch tokens 可以被合并为单个 token, 从而显著减少长期记忆中的 token 数量。
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/streaming-video-understanding-through-sparsity/fluxmem.png" alt="FluxMem adaptive hierarchical visual memory framework">
-  <figcaption>Figure 5: FluxMem compresses streaming visual memory across short-, mid-, and long-term timescales. (Image source: Xie et al. 2026)</figcaption>
+  <figcaption>Figure 5: FluxMem compresses streaming visual memory across short-, mid-, and long-term timescales.<br>(Image source: Xie et al. 2026)</figcaption>
 </figure>
 
-*StreamingTOM* [(Chen et al., 2025)](https://arxiv.org/abs/2510.18269) 将 visual token compression 与 KV-cache retrieval 结合起来。首先, 方法在 visual embedding 层去除视频中的冗余视觉信息; 随后, 将压缩后的 visual embeddings 输入 LLM, 通过 prefill 转化为 KV-cache, 并以量化形式存储。当模型需要回答问题时, 再根据当前查询动态检索 Top-$K$ 个最相关的 frame-level KV-cache, 并将其作为视觉上下文提供给模型。因此, *StreamingTOM* 实际上结合了两类方法的优势: visual embedding compression 用于减少进入 LLM 的冗余 token, 而 KV-cache retrieval 则用于在回答阶段动态访问与当前问题相关的历史视觉信息。
+*StreamingTOM* [(Chen et al., 2025)](https://arxiv.org/abs/2510.18269) 将 visual token compression 与 KV-cache retrieval 结合起来。首先, 方法在 visual embedding 层去除视频中的冗余视觉信息; 随后, 将压缩后的 visual embeddings 输入 LLM, 通过 prefill 转化为 KV-cache, 并以量化形式存储。当模型需要回答问题时, 再根据当前查询动态检索 Top-$$K$$ 个最相关的 frame-level KV-cache, 并将其作为视觉上下文提供给模型。因此, *StreamingTOM* 实际上结合了两类方法的优势: visual embedding compression 用于减少进入 LLM 的冗余 token, 而 KV-cache retrieval 则用于在回答阶段动态访问与当前问题相关的历史视觉信息。
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/streaming-video-understanding-through-sparsity/streamingtom.png" alt="StreamingTOM token compression and KV-cache retrieval framework">
-  <figcaption>Figure 6: StreamingTOM combines pre-LLM visual token compression with query-dependent KV-cache retrieval. (Image source: Chen et al. 2025)</figcaption>
+  <figcaption>Figure 6: StreamingTOM combines pre-LLM visual token compression with query-dependent KV-cache retrieval.<br>(Image source: Chen et al. 2025)</figcaption>
 </figure>
 
 # Sparse Vision Encoder
 
 Deep learning scales best when its architecture aligns with the fundamental structure of the data。除了在 vision encoder 输出 visual patch tokens 后进行压缩, 还可以直接调整 encoder 的架构, 使其利用视频数据本身的稀疏性, 从编码阶段便生成更少的 visual tokens。
 
-*OneVision-Encoder* [(Tang et al., 2026)](https://arxiv.org/abs/2602.08683) 将 video codec 的编码结构引入稀疏视觉建模。它首先使用 HEVC (see Appendix for more details) 编码视频, 完整保留每个 I-frame 的 RGB 数据, 同时提取每个 P-frame 的 motion vector $\tau_t$ 和 residual signal $R_t$。对于 P-frame 中的每个 patch, *OneVision-Encoder* 将对应的 motion magnitude 与 residual energy 相加, 得到一个标量显著性分数。随后, 方法根据该分数对所有 patch 排序, 仅保留 Top-$K$ 个最显著的 patch 并送入 vision encoder 中, 从而避免对变化较小的区域进行冗余编码。为了预训练该 encoder, *OneVision-Encoder* 还提出 image and video clustering。该方法分别对训练集中的 image 和 video 表征进行聚类, 并在训练过程中拉近样本表征与所属聚类中心的距离, 同时推远其与其他聚类中心的距离。通过这种多类别对比学习目标, vision encoder 能够学习适合图像和视频输入的视觉表征。
+*OneVision-Encoder* [(Tang et al., 2026)](https://arxiv.org/abs/2602.08683) 将 video codec 的编码结构引入稀疏视觉建模。它首先使用 HEVC (see Appendix for more details) 编码视频, 完整保留每个 I-frame 的 RGB 数据, 同时提取每个 P-frame 的 motion vector $$\tau_t$$ 和 residual signal $$R_t$$。对于 P-frame 中的每个 patch, *OneVision-Encoder* 将对应的 motion magnitude 与 residual energy 相加, 得到一个标量显著性分数。随后, 方法根据该分数对所有 patch 排序, 仅保留 Top-$$K$$ 个最显著的 patch 并送入 vision encoder 中, 从而避免对变化较小的区域进行冗余编码。为了预训练该 encoder, *OneVision-Encoder* 还提出 image and video clustering。该方法分别对训练集中的 image 和 video 表征进行聚类, 并在训练过程中拉近样本表征与所属聚类中心的距离, 同时推远其与其他聚类中心的距离。通过这种多类别对比学习目标, vision encoder 能够学习适合图像和视频输入的视觉表征。
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/streaming-video-understanding-through-sparsity/one-vision-encoder.png" alt="OneVision-Encoder codec-aligned sparse vision encoder">
-  <figcaption>Figure 7: OneVision-Encoder uses codec-derived motion and residual signals to select informative video patches. (Image source: Tang et al. 2026)</figcaption>
+  <figcaption>Figure 7: OneVision-Encoder uses codec-derived motion and residual signals to select informative video patches.<br>(Image source: Tang et al. 2026)</figcaption>
 </figure>
 
-*CoPE-VideoLM* [(Sarkar et al., 2026)](https://arxiv.org/abs/2602.13191) 同样借鉴了 HEVC, 但不再要求 vision encoder 为 P-frame 生成稠密的 patch embeddings。它引入额外的 $\delta$-encoder, 将 P-frame 的 motion vectors 和 residual signals 分别编码为固定数量的 motion tokens 与 residual tokens, 从而直接以紧凑表征描述帧间变化。
+*CoPE-VideoLM* [(Sarkar et al., 2026)](https://arxiv.org/abs/2602.13191) 同样借鉴了 HEVC, 但不再要求 vision encoder 为 P-frame 生成稠密的 patch embeddings。它引入额外的 $$\delta$$-encoder, 将 P-frame 的 motion vectors 和 residual signals 分别编码为固定数量的 motion tokens 与 residual tokens, 从而直接以紧凑表征描述帧间变化。
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/streaming-video-understanding-through-sparsity/cope-videolm.png" alt="CoPE-VideoLM codec-primitive video language model">
-  <figcaption>Figure 8: CoPE-VideoLM represents inter-frame changes with compact motion and residual tokens. (Image source: Sarkar et al. 2026)</figcaption>
+  <figcaption>Figure 8: CoPE-VideoLM represents inter-frame changes with compact motion and residual tokens.<br>(Image source: Sarkar et al. 2026)</figcaption>
 </figure>
 
-为了使 $\delta$-encoder 生成的 tokens 与标准 vision encoder 的 visual embedding space 对齐, *CoPE-VideoLM* 设计了一个 self-reconstruction simulation 框架。该框架在预训练阶段引入 reference Transformer 和 warped Transformer, 并在特征空间中模拟 HEVC 的帧间解码过程。首先, reference Transformer 根据参考 I-frame $I_{t-s}$ 和 motion tokens $\tau_{\mathrm{tok},t}$ 生成运动补偿后的参考特征 $\tilde{P}_{\mathrm{ref},t} = \theta_{\mathrm{ref}}(I_{t-s}, \tau_{\mathrm{tok},t})$。随后, warped Transformer 融合 residual tokens $R_{\mathrm{tok},t}$, 重建当前 P-frame 的视觉特征 $\tilde{P}_t = \theta_{\mathrm{warped}}(\tilde{P}_{\mathrm{ref},t}, R_{\mathrm{tok},t})$。最后, 方法计算重建特征 $\tilde{P}_t$ 与标准 vision encoder 输出 $\hat{P}_t$ 之间的 reconstruction loss。由于两个 Transformer 只能依赖 $\delta$-encoder 提供的压缩信息完成重建, 该目标会迫使 $\delta$-encoder 学会在有限 token 预算下准确表征 motion vectors 和 residual signals。
+为了使 $$\delta$$-encoder 生成的 tokens 与标准 vision encoder 的 visual embedding space 对齐, *CoPE-VideoLM* 设计了一个 self-reconstruction simulation 框架。该框架在预训练阶段引入 reference Transformer 和 warped Transformer, 并在特征空间中模拟 HEVC 的帧间解码过程。首先, reference Transformer 根据参考 I-frame $$I_{t-s}$$ 和 motion tokens $$\tau_{\mathrm{tok},t}$$ 生成运动补偿后的参考特征 $$\tilde{P}_{\mathrm{ref},t} = \theta_{\mathrm{ref}}(I_{t-s}, \tau_{\mathrm{tok},t})$$。随后, warped Transformer 融合 residual tokens $$R_{\mathrm{tok},t}$$, 重建当前 P-frame 的视觉特征 $$\tilde{P}_t = \theta_{\mathrm{warped}}(\tilde{P}_{\mathrm{ref},t}, R_{\mathrm{tok},t})$$。最后, 方法计算重建特征 $$\tilde{P}_t$$ 与标准 vision encoder 输出 $$\hat{P}_t$$ 之间的 reconstruction loss。由于两个 Transformer 只能依赖 $$\delta$$-encoder 提供的压缩信息完成重建, 该目标会迫使 $$\delta$$-encoder 学会在有限 token 预算下准确表征 motion vectors 和 residual signals。
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/streaming-video-understanding-through-sparsity/delta-encoder.png" alt="CoPE-VideoLM delta-encoder self-reconstruction simulation">
-  <figcaption>Figure 9: Self-reconstruction simulation aligns compact codec tokens with the visual embedding space. (Image source: Sarkar et al. 2026)</figcaption>
+  <figcaption>Figure 9: Self-reconstruction simulation aligns compact codec tokens with the visual embedding space.<br>(Image source: Sarkar et al. 2026)</figcaption>
 </figure>
 
 # References

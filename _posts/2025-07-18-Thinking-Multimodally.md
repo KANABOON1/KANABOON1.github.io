@@ -92,7 +92,7 @@ AI model 往往缺乏自主的 "pause and think" 能力，它们的回答主要�
 
 1. **Modifying the proposal distribution**：输入层面的改动。它通过改变 LLM 原有的 *proposal distribution*，也就是给定输入条件下模型对下一个 token 的概率分布，来影响后续生成。
 
-2. **Optimizing the verifier**：输出层面的改动。它不直接改变 LLM 的 *proposal distribution*，而是针对同一个问题生成的 $M$ 个并行回答，利用 **verifier** 来聚合、排序或选择最优答案。
+2. **Optimizing the verifier**：输出层面的改动。它不直接改变 LLM 的 *proposal distribution*，而是针对同一个问题生成的 $$M$$ 个并行回答，利用 **verifier** 来聚合、排序或选择最优答案。
 
 对于第一类方法，常见做法包括：
 
@@ -106,7 +106,7 @@ AI model 往往缺乏自主的 "pause and think" 能力，它们的回答主要�
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/how-we-think/parallel_sampling.png" alt="Parallel sampling and sequential revision for test-time compute">
-  <figcaption>Figure 1: Illustration of parallel sampling vs sequential revision. (Image source: Snell et al. 2024)</figcaption>
+  <figcaption>Figure 1: Illustration of parallel sampling vs sequential revision.<br>(Image source: Snell et al. 2024)</figcaption>
 </figure>
 
 # Thinking in Continuous Space
@@ -122,7 +122,7 @@ Latent tokens 指在 LLM 训练或者推理过程中动态添加的一批**隐�
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/how-we-think/deliberation_via_cache.png" alt="Deliberation in latent space via differentiable cache augmentation">
-  <figcaption>Figure 2: Deliberation in latent space via differentiable cache augmentation. (Image source: Liu et al. 2024)</figcaption>
+  <figcaption>Figure 2: Deliberation in latent space via differentiable cache augmentation.<br>(Image source: Liu et al. 2024)</figcaption>
 </figure>
 
 值得注意的是，这里仅对 coprocessor model 进行微调，而非直接微调 LLM 本身。这样做的目的是保留 LLM 在预训练阶段获得的能力，同时避免直接微调 LLM 导致灾难性遗忘。
@@ -131,7 +131,7 @@ Latent tokens 指在 LLM 训练或者推理过程中动态添加的一批**隐�
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/how-we-think/softcot.png" alt="SoftCoT framework for latent chain-of-thought reasoning">
-  <figcaption>Figure 3: Illustration of SoftCoT, where latent tokens act as an implicit chain-of-thought before answer generation. (Image source: Xu et al. 2025)</figcaption>
+  <figcaption>Figure 3: Illustration of SoftCoT, where latent tokens act as an implicit chain-of-thought before answer generation.<br>(Image source: Xu et al. 2025)</figcaption>
 </figure>
 
 与 *Coconut* [(Hao et al., 2024)](https://arxiv.org/abs/2412.06769) 通过自回归方式逐个生成 latent token 不同，*SoftCoT* 中的 latent tokens 是通过一批 query tokens 获取对应位置的隐藏状态，然后通过一个 projection layer 将辅助模型的隐藏状态映射到 LLM 的隐藏状态中，实现对 LLM 的直接增强。
@@ -146,7 +146,7 @@ Thinking-with-image 系列工作很大程度上沿用了 thinking-with-text 的�
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/how-we-think/multimodal_cot.png" alt="Multimodal-CoT two-stage rationale generation and answer inference">
-  <figcaption>Figure 4: Multimodal-CoT decomposes multimodal reasoning into rationale generation and answer inference. (Image source: Zhang et al. 2023)</figcaption>
+  <figcaption>Figure 4: Multimodal-CoT decomposes multimodal reasoning into rationale generation and answer inference.<br>(Image source: Zhang et al. 2023)</figcaption>
 </figure>
 
 该方法使用 SFT 训练模型。由于 *ScienceQA* 和 *A-OKVQA* 提供了人工标注的思维链，便于进行 SFT，因此作者选用了这两个数据集进行训练和测试。
@@ -157,7 +157,7 @@ Thinking-with-image 系列工作很大程度上沿用了 thinking-with-text 的�
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/how-we-think/visual_rft.png" alt="Visual-RFT framework for visual reinforcement fine-tuning">
-  <figcaption>Figure 5: Visual-RFT applies reinforcement fine-tuning to visual reasoning tasks. (Image source: Liu et al. 2025)</figcaption>
+  <figcaption>Figure 5: Visual-RFT applies reinforcement fine-tuning to visual reasoning tasks.<br>(Image source: Liu et al. 2025)</figcaption>
 </figure>
 
 需要意识到，多模态推理方式与纯文本推理有所不同：人类在解决视觉问题时往往是边看边思考的。如果仅仅利用一次图片信息进行推理，就无法充分模拟这种“动态观察—推理”的过程，容易遗漏关键信息，导致推理不够全面。
@@ -170,14 +170,14 @@ Thinking-with-image 系列工作很大程度上沿用了 thinking-with-text 的�
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/how-we-think/visual_sketchpad.png" alt="Visual Sketchpad framework for visual chain-of-thought">
-  <figcaption>Figure 6: Visual Sketchpad enables multimodal models to use sketches and visual tools during reasoning. (Image source: Hu et al. 2024)</figcaption>
+  <figcaption>Figure 6: Visual Sketchpad enables multimodal models to use sketches and visual tools during reasoning.<br>(Image source: Hu et al. 2024)</figcaption>
 </figure>
 
 基于 ICL（in-context learning）的工具调用方式缺少模型对工具使用的自主探索，并且缺乏灵活性。因此，*VisualToolAgent* [(Huang et al., 2025)](https://arxiv.org/abs/2505.20289) 使用 GRPO 训练了一个 visual tool agent，专门用于根据当前任务选择适当的工具。
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/how-we-think/visual_tool_agent.png" alt="VisualToolAgent reinforcement learning framework for visual tool selection">
-  <figcaption>Figure 7: VisualToolAgent learns to select visual tools through reinforcement learning. (Image source: Huang et al. 2025)</figcaption>
+  <figcaption>Figure 7: VisualToolAgent learns to select visual tools through reinforcement learning.<br>(Image source: Huang et al. 2025)</figcaption>
 </figure>
 
 另外，实验表明这个通过 RL 训练的 agent 可以迁移到其他多模态大模型上，说明对工具的使用也是一种泛化的知识。
@@ -186,7 +186,7 @@ Thinking-with-image 系列工作很大程度上沿用了 thinking-with-text 的�
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/how-we-think/deepeyes.png" alt="DeepEyes end-to-end reinforcement learning for thinking with images">
-  <figcaption>Figure 8: DeepEyes trains the model to decide when to inspect image regions and when to answer. (Image source: Zheng et al. 2025)</figcaption>
+  <figcaption>Figure 8: DeepEyes trains the model to decide when to inspect image regions and when to answer.<br>(Image source: Zheng et al. 2025)</figcaption>
 </figure>
 
 # Thinking with Video
@@ -203,7 +203,7 @@ Thinking-with-image 系列工作很大程度上沿用了 thinking-with-text 的�
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/how-we-think/cos.png" alt="CoS chain-of-shot prompting for long video understanding">
-  <figcaption>Figure 9: CoS treats key-shot selection as test-time visual prompt optimization for long-video understanding. (Image source: Hu et al. 2025)</figcaption>
+  <figcaption>Figure 9: CoS treats key-shot selection as test-time visual prompt optimization for long-video understanding.<br>(Image source: Hu et al. 2025)</figcaption>
 </figure>
 
 在此基础上，*Temporal CoT* [(Arnab et al., 2025)](https://arxiv.org/abs/2507.02001) 进一步将关键帧选择与文字标注融合，旨在增强视频输入特征。在 *Temporal CoT* 中，作者使用两个 VLM：第一个 VLM 筛选出关键帧并对这些帧进行文字标注；第二个 VLM 根据筛选出来的关键帧回答问题。
@@ -212,7 +212,7 @@ Thinking-with-image 系列工作很大程度上沿用了 thinking-with-text 的�
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/how-we-think/temporal_cot.png" alt="Temporal Chain of Thought for long-video understanding">
-  <figcaption>Figure 10: Temporal CoT combines key-frame selection with textual notes for long-video reasoning. (Image source: Arnab et al. 2025)</figcaption>
+  <figcaption>Figure 10: Temporal CoT combines key-frame selection with textual notes for long-video reasoning.<br>(Image source: Arnab et al. 2025)</figcaption>
 </figure>
 
 ### Token Compression
@@ -229,7 +229,7 @@ Token compression 是另一条自然路线：不一定要选择少量关键帧�
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/how-we-think/stsg.png" alt="Video spatial-temporal scene graph for Video-of-Thought">
-  <figcaption>Figure 11: Video-of-Thought uses video spatial-temporal scene graphs to structure visual information before reasoning. (Image source: Fei et al. 2025)</figcaption>
+  <figcaption>Figure 11: Video-of-Thought uses video spatial-temporal scene graphs to structure visual information before reasoning.<br>(Image source: Fei et al. 2025)</figcaption>
 </figure>
 
 # References
