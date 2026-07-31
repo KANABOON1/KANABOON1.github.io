@@ -92,7 +92,7 @@ AI model 往往缺乏自主的 "pause and think" 能力，它们的回答主要�
 
 1. **Modifying the proposal distribution**：输入层面的改动。它通过改变 LLM 原有的 *proposal distribution*，也就是给定输入条件下模型对下一个 token 的概率分布，来影响后续生成。
 
-2. **Optimizing the verifier**：输出层面的改动。它不直接改变 LLM 的 *proposal distribution*，而是针对同一个问题生成的 \(M\) 个并行回答，利用 **verifier** 来聚合、排序或选择最优答案。
+2. **Optimizing the verifier**：输出层面的改动。它不直接改变 LLM 的 *proposal distribution*，而是针对同一个问题生成的 $M$ 个并行回答，利用 **verifier** 来聚合、排序或选择最优答案。
 
 对于第一类方法，常见做法包括：
 

@@ -89,13 +89,13 @@ description: '流视频理解需要在实时交互的同时, 高效处理持续�
 
 *ReKV* [(Di et al., 2025)](https://openreview.net/forum?id=8g9fs6mdEG) 并不直接进行压缩, 而是进行检索。它首先完整保留当前视频中所有 visual tokens 对应的 KV-cache, 这一过程被称为 internal retrieval。当模型开始回答问题时, 每一层根据当前层的 hidden states $X$, 从该层保存的 visual KV-cache 中检索 Top-$K$ 个最相关的视觉 token, 并将其作为额外上下文参与注意力计算:
 
-\[
+$$
 O = \operatorname{Attn}\left(
 W_QX, \,
 [L_K, W_KX], \,
 [L_V, W_VX]
 \right).
-\]
+$$
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/streaming-video-understanding-through-sparsity/rekv.png" alt="ReKV framework for in-context video KV-cache retrieval">
