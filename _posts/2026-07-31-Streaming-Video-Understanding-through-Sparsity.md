@@ -102,7 +102,7 @@ $$
   <figcaption>Figure 1: ReKV retrieves query-relevant visual KV-cache for streaming video question answering.<br>(Image source: Di et al. 2025)</figcaption>
 </figure>
 
-除了将 KV-cache 作为可检索的外部记忆, 也可以直接对其进行持续压缩。*LiveVLM* [(Ning et al., 2025)](https://arxiv.org/abs/2505.15269) 观察到 visual tokens 中存在类似 attention sink 的现象, 即大量视觉 token 会将较高的注意力分配给少数 sink visual tokens。因此, *LiveVLM* 使用 vision-to-vision attention score, 而不是 text-to-vision attention score, 计算每层 visual token 的重要性, 并在时间分桶的约束下选择需要保留的 token。该策略既维持了视频内容在时间维度上的覆盖, 又能够优先保留注意力得分较高的视觉信息。*InfiniPot-V* [(Kim et al., 2025)](https://arxiv.org/abs/2506.15745) 提出了一种受预算约束的持续 KV-cache 压缩机制。当缓存长度达到预设上限 $$M$$ 时, 每一层的 KV-cache 会被压缩至长度 $$C$$, 其中 $$C \ll M$$。具体而言, *InfiniPot-V* 首先沿时间维度执行稀疏化操作 TaR: 如果当前帧某一位置的 key 与历史帧相同位置的 key 具有较高相似度, 则认为该 token 包含重复信息并将其移除。随后, 方法沿空间维度执行 VaR: 优先保留 value norm 较大的 token。作者发现, value norm 较大的 token 通常具有更高的表示熵, 因此可能包含更丰富的信息。*HERMES* [(Zhang et al., 2026)](https://arxiv.org/abs/2601.14724) 则进一步研究了不同深度的 LLM 层对视觉信息的注意力模式。其分析表明, 浅层具有明显的近因偏好, 即模型更倾向于关注距离当前 token 较近的视觉 token; 随着网络深度增加, 这种近因偏好逐渐减弱。因此, *HERMES* 针对 shallow, middle 和 deep layers 分别设计了不同的 visual KV-cache 重要性评估规则, 并将 KV-cache 组织为 hierarchical memory, 以匹配不同层的注意力特性。此外, *HERMES* 提出了 M-RoPE 的位置重索引策略, 使压缩后保留下来的 token 在 M-RoPE 的三个坐标维度上重新保持连续。需要注意的是, 对于压缩后 token 的位置编码是否应当重索引, 目前不同工作采用了不同策略: 部分方法保留 token 的原始位置坐标, 另一些方法则重新构造连续的位置索引。
+除了将 KV-cache 作为可检索的外部记忆, 也可以直接对其进行持续压缩。*LiveVLM* [(Ning et al., 2025)](https://arxiv.org/abs/2505.15269) 观察到 visual tokens 中存在类似 attention sink 的现象, 即大量视觉 token 会将较高的注意力分配给少数 sink visual tokens。因此, *LiveVLM* 使用 vision-to-vision attention score, 而不是 text-to-vision attention score, 计算每层 visual token 的重要性, 并在时间分桶的约束下选择需要保留的 token。该策略既维持了视频内容在时间维度上的覆盖, 又能够优先保留注意力得分较高的视觉信息。*InfiniPot-V* [(Kim et al., 2025)](https://arxiv.org/abs/2506.15745) 提出了一种受预算约束的持续 KV-cache 压缩机制。当缓存长度达到预设上限 $$M$$ 时, 每一层的 KV-cache 会被压缩至长度 $$C$$, 其中 $$C \ll M$$。具体而言, *InfiniPot-V* 首先沿时间维度执行稀疏化操作: 如果当前帧某一位置的 key 与历史帧相同位置的 key 具有较高相似度, 则认为该 token 包含重复信息并将其移除。随后, 方法沿空间维度执行稀疏化操作: 优先保留 value norm 较大的 token。作者发现, value norm 较大的 token 通常具有更高的表示熵, 因此可能包含更丰富的信息。*HERMES* [(Zhang et al., 2026)](https://arxiv.org/abs/2601.14724) 则进一步研究了不同深度的 LLM 层对视觉信息的注意力模式。其分析表明, 浅层具有明显的近因偏好, 即模型更倾向于关注距离当前 token 较近的视觉 token; 随着网络深度增加, 这种近因偏好逐渐减弱。因此, *HERMES* 针对 shallow, middle 和 deep layers 分别设计了不同的 visual KV-cache 重要性评估规则, 并将 KV-cache 组织为 hierarchical memory, 以匹配不同层的注意力特性。此外, *HERMES* 提出了 M-RoPE 的位置重索引策略, 使压缩后保留下来的 token 在 M-RoPE 的三个坐标维度上重新保持连续。需要注意的是, 对于压缩后 token 的位置编码是否应当重索引, 目前不同工作采用了不同策略: 部分方法保留 token 的原始位置坐标, 另一些方法则重新构造连续的位置索引。
 
 <figure class="post-figure post-figure--wide">
   <img src="/assets/posts/streaming-video-understanding-through-sparsity/infinipot.png" alt="InfiniPot-V memory-constrained KV-cache compression framework">
@@ -188,10 +188,54 @@ Deep learning scales best when its architecture aligns with the fundamental stru
 
 </div>
 
-</div>
-
 # Appendix
 
-## Otsu 自适应阈值法
+## Otsu's Method
+
+Otsu's method 是一种自适应阈值分割算法, 可以将灰度图或连续 score map 划分为两类。例如, 在视频变化检测中, 两类可以分别对应静态区域和动态区域。该方法无需手动指定阈值, 而是从数据分布中寻找使两类区分度最大的阈值 $$t$$。设 score 被离散为 $$L$$ 个区间, $$P(i)$$ 表示第 $$i$$ 个区间的归一化频率, 则候选阈值 $$t$$ 两侧的样本比例与均值分别为:
+
+$$
+\begin{aligned}
+\omega_0(t) &= \sum_{i=0}^{t} P(i), &
+\omega_1(t) &= \sum_{i=t+1}^{L-1} P(i), \\
+\mu_0(t) &= \frac{\sum_{i=0}^{t} iP(i)}{\omega_0(t)}, &
+\mu_1(t) &= \frac{\sum_{i=t+1}^{L-1} iP(i)}{\omega_1(t)}.
+\end{aligned}
+$$
+
+Otsu's method 使用两类的比例与均值计算类间方差, 并选择使其最大化的阈值。由于最大化类间方差等价于最小化类内方差, 该阈值能够使分割后的两类在统计意义上尽可能分离:
+
+$$
+\sigma_b^2(t) = \omega_0(t)\omega_1(t)
+\left(\mu_0(t) - \mu_1(t)\right)^2, \qquad
+t^* = \underset{t}{\operatorname{arg\,max}}\; \sigma_b^2(t).
+$$
+
+<figure class="post-figure">
+  <img src="/assets/posts/streaming-video-understanding-through-sparsity/otsu.png" alt="Otsu's method separates a distribution into two classes with an adaptive threshold">
+  <figcaption>Figure 10: Otsu's method 通过最大化类间方差确定自适应分割阈值。</figcaption>
+</figure>
 
 ## HEVC
+
+HEVC/H.265 使用 I-frame, P-frame 和 B-frame 等不同类型的视频帧。I-frame 可以独立解码, 而 P-frame 和 B-frame 则利用帧间预测减少时间冗余。其中, P-frame 主要通过 motion vector 和 residual signal 描述当前帧相对于参考帧的变化。FFmpeg 可以将 H.264 等编码格式的视频转码为 HEVC/H.265, 同时继续使用 `.mp4` 作为容器格式。这里使用 *OneVision-Encoder* 提供的 HEVC decoder, 从视频中提取 motion vector 和 residual signal, 分别对应 Figure 11(e) 和 Figure 11(f)。
+
+以 P-frame 的亮度分量 $$Y$$ 为例, 解码过程可以简化为两个步骤。首先, motion compensation 根据参考帧 $$\hat{F}_{\pi(t),Y}$$ 和 motion vector $$v_t$$ 预测当前帧 (Figure 11(c))。随后, decoder 将 residual signal $$R_{t,Y}$$ 加到预测结果上, 得到重建后的 P-frame (Figure 11(d)):
+
+$$
+\begin{aligned}
+\tilde{F}_{t,Y}^{P}(x,y)
+&= \operatorname{MC}\left(\hat{F}_{\pi(t),Y}, v_t\right)(x,y), \\
+\hat{F}_{t,Y}^{P}(x,y)
+&= \tilde{F}_{t,Y}^{P}(x,y) + R_{t,Y}(x,y).
+\end{aligned}
+$$
+
+在获得 motion vector 和 residual signal 后, 我们按照 *OneVision-Encoder* 的方式, 分别计算 motion magnitude 和 residual energy, 对二者进行 min-max normalization, 再将其加权和作为每个 patch 的显著性分数。原方法按照预设 ratio 保留得分最高的 patches, 如 Figure 11(g) 所示。我们还尝试使用 Otsu's method 对 patch score 进行自适应二分类, 如 Figure 11(h) 所示。与固定 ratio 相比, 该方法能够根据每段视频的 score 分布动态调整 token 数量, 减少保留过多或遗漏重要 patches 的风险。
+
+<figure class="post-figure post-figure--wide">
+  <img src="/assets/posts/streaming-video-understanding-through-sparsity/hevc_otsu.png" alt="HEVC decoding signals and fixed-budget versus Otsu-based adaptive patch selection">
+  <figcaption>Figure 11: HEVC 帧间解码过程, codec signals, 以及 fixed-budget 与 Otsu-based patch selection 的对比。</figcaption>
+</figure>
+
+</div>
