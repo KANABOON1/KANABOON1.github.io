@@ -11,6 +11,8 @@ redirect_from:
 
 Experiences
 ---
+- [2026.07] Completed *StreamFlow: Dynamic Memory Flows for Streaming Video Understanding*.
+- [2026.04] Started research internship at **Nanyang Technological University (NTU)**, supervised by Prof. Bo An.
 - [2026.02] *MemGen: Weaving Generative Latent Memory for Self-Evolving Agents*. ICLR 2026 Poster.
 - [2026.01] Completed *LatentMem: Customizing Latent Memory for Multi-Agent Systems*.
 - [2025.10] Started research internship at **Shanghai AI Lab**, supervised by Prof. Yu Cheng and Yang Yang.
