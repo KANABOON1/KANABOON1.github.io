@@ -86,41 +86,47 @@
 
 {% include base_path %}
 
-<div class="publication-card">
-  <div class="publication-flex-container">
-    <!-- 左侧图片区域 -->
-    {% if post.image %}
-      <div class="publication-image">
-        <img src="{{ post.image }}" alt="Thumbnail for {{ post.title }}">
-      </div>
+{% comment %} Thumbnails live in _publications/images/ and are served under /publications/, so the path is
+absolute: the same card is rendered on the home page and on /publications/. {% endcomment %}
+{% capture pub_image %}{{ base_path }}/publications/{{ post.image }}{% endcapture %}
+{% assign pub_main_url = post.projecturl | default: post.paperurl %}
+{% capture me_html %}<span class="publication-me">{{ site.author.name }}</span>{% endcapture %}
+{% capture eq_html %}<sup class="publication-eq" title="Equal contribution">*</sup>{% endcapture %}
+
+<article class="publication-card">
+  {% if post.image %}
+    <a class="publication-image" href="{{ pub_main_url }}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+      <img src="{{ pub_image }}" alt="" loading="lazy">
+    </a>
+  {% endif %}
+
+  <div class="publication-content">
+    <h3 class="publication-title">
+      {% if post.paperurl %}<a href="{{ post.paperurl }}" target="_blank" rel="noopener">{{ post.title }}</a>{% else %}{{ post.title }}{% endif %}
+    </h3>
+
+    {% if post.authors %}
+      <p class="publication-authors">{{ post.authors | replace: site.author.name, me_html | replace: "*", eq_html }}</p>
     {% endif %}
 
-    <!-- 右侧文字内容区域 -->
-    <div class="publication-content">
-      <h2 class="publication-title">
-        {{ post.title }}
-      </h2>
+    {% if post.venue %}
+      <p class="publication-venue">
+        {% if post.venue_short %}<span class="venue-badge">{{ post.venue_short }}</span>{% endif %}
+        {% if post.highlight %}<span class="venue-badge venue-badge--highlight">{{ post.highlight }}</span>{% endif %}
+        <span class="venue-full">{{ post.venue }}</span>
+      </p>
+    {% endif %}
 
-      {% if post.authors %}
-        <p class="publication-authors">
-          {{ post.authors }}
-        </p>
+    <div class="publication-links">
+      {% if post.paperurl %}
+        <a href="{{ post.paperurl }}" target="_blank" rel="noopener"><i class="fas fa-file-lines" aria-hidden="true"></i>Paper</a>
       {% endif %}
-
-      {% if post.venue %}
-        <p class="publication-venue">
-          {{ post.venue }}, {{ post.year }}
-        </p>
+      {% if post.codeurl %}
+        <a href="{{ post.codeurl }}" target="_blank" rel="noopener"><i class="fab fa-github" aria-hidden="true"></i>Code</a>
       {% endif %}
-
-      <div class="publication-links">
-        {% if post.paperurl %}
-          <a href="{{ post.paperurl }}" target="_blank" class="publication-link">PDF</a>
-        {% endif %}
-        {% if post.codeurl %}
-          <a href="{{ post.codeurl }}" target="_blank" class="publication-link">Code</a>
-        {% endif %}
-      </div>
+      {% if post.projecturl %}
+        <a href="{{ post.projecturl }}" target="_blank" rel="noopener"><i class="fas fa-globe" aria-hidden="true"></i>Project Page</a>
+      {% endif %}
     </div>
   </div>
-</div>
+</article>

@@ -172,6 +172,7 @@ on-policy training via reinforcement learning. on-policy RL 的方法的优点�
 
 ### *Loss function: reverse KL*
 On-policy distillation 的核心想法是: 从 student model 采样出轨迹, 并让 teacher model 对每一个 token 进行打分。具体来说, on-policy distillation 采用反向 KL 散度 (反向 KL 与 on-policy 这种从自身采样的方法更契合), 让学生模型在自己实际生成的轨迹上靠近 teacher model 的高概率行为。需要注意的是, reverse KL 是 mode-seeking 的, 因此它更倾向于压缩到 teacher model 认为最优的模式, 而不是完整覆盖 teacher model 的全部输出分布:
+
 $$
 \begin{aligned}
 & D_{KL}(\pi_{\theta} \parallel \pi_{teacher}) \\

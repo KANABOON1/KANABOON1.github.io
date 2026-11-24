@@ -1,91 +1,191 @@
+/* ==========================================================================
+   PUBLICATION CARDS (home page and /publications/)
+   ========================================================================== */
+
+.publication-list {
+  margin: 0.25em 0 1em;
+}
+
 .publication-card {
-  background: var(--global-card-color, #ffffff); 
-  border: 1px solid var(--global-card-color, #e0e0e0);
-  border-radius: 12px;
-  padding: 10px; /* 修改这里的值 */
-  margin: 10px 0;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-  transition: box-shadow 0.3s ease;
-}
-
-.publication-card:hover {
-  box-shadow: 0 8px 16px rgba(0,0,0,0.12);
-}
-
-.publication-title {
-  font-size: 1rem;
-  font-weight: bold;
-  margin-bottom: 2px;
-  margin-top: -2px;
-  font-family: "Times New Roman", Times, serif;
-}
-
-.publication-title a {
-  text-decoration: none;
-  color: var(--global-text-color, #2c3e50); 
-}
-
-.publication-title a:hover {
-  color: var(--global-link-color-hover, #007acc); 
-}
-
-.publication-authors {
-    font-size: 0.8rem;
-    color: var(--global-text-color, #2c3e50); 
-    margin-bottom: 2px;
-    margin-top: -2px;
-    font-family: "Times New Roman", Times, serif;
-}
-
-.publication-venue {
-    font-size: 0.8rem;
-    color: var(--global-text-color, #2c3e50); 
-    margin-bottom: 2px;
-    margin-top: -2px;
-    font-family: "Times New Roman", Times, serif;
-    font-style: italic;
-}
-
-.publication-excerpt {
-  font-size: 1rem;
-  color: var(--global-text-color-light, #555); 
-  margin-bottom: 5px;
-}
-
-.publication-links a {
-  margin-right: 5px;
-  font-size: 0.6rem;
-  color: var(--global-link-color, #007acc); 
-  text-decoration: none;
-  margin-top: -2px;
-  margin-bottom: 2px;
-  border: 1px solid var(--global-link-border-color, #ccc);
-  display: inline-block;
-  padding: 0px 3px;   // 框内间距: [上下, 左右]
-}
-
-.publication-links a:hover {
-  text-decoration: underline;
-}
-
-.publication-flex-container {
   display: flex;
-  align-items: center; /* 改为 center，而不是 flex-start */
-  gap: 16px;
+  align-items: flex-start;
+  gap: 1.25em;
+  margin: 0 0 0.9em;
+  padding: 1em;
+  background: var(--global-card-color);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    border-color: var(--accent-border);
+    box-shadow: var(--card-shadow-hover);
+  }
 }
 
+/* The figures are drawn on white, so the frame stays white in the dark theme too. */
 .publication-image {
-  width: 180px;
-  height: 105px;
-  flex: 0 0 180px;
+  flex: 0 0 15em;
+  aspect-ratio: 16 / 9;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0.3em;
+  background: #fff;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  overflow: hidden;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+  }
 }
 
-.publication-image img {
-  width: 100%;
-  height: 100%;
-  border-radius: 8px;
-  object-fit: contain;
+.publication-card:hover .publication-image img {
+  transform: scale(1.03);
+}
+
+/* .archive adds a shadow to linked images on hover; the frame already reacts. */
+.archive a.publication-image:hover img {
+  box-shadow: none;
+}
+
+.publication-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.publication-title {
+  margin: 0 0 0.4em;
+  font-size: 1.1em;
+  font-weight: 600;
+  line-height: 1.35;
+
+  a,
+  .archive & a {
+    color: var(--global-text-color);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--accent);
+      text-decoration: none;
+    }
+  }
+}
+
+.publication-list .publication-authors {
+  margin: 0 0 0.45em;
+  font-size: 0.9em;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.publication-me {
+  color: var(--global-text-color);
+  font-weight: 700;
+}
+
+.publication-list .publication-venue {
+  margin: 0 0 0.7em;
+  font-size: 0.88em;
+  line-height: 1.5;
+}
+
+.venue-badge {
+  display: inline-block;
+  margin-right: 0.4em;
+  padding: 0.08em 0.55em;
+  border-radius: 6px;
+  font-size: 0.88em;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.venue-badge--highlight {
+  color: var(--highlight-fg);
+  background: var(--highlight-bg);
+}
+
+.venue-full {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.publication-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45em;
+
+  a,
+  .archive & a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    padding: 0.25em 0.8em;
+    font-size: 0.82em;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--global-text-color);
+    text-decoration: none;
+    border: 1px solid var(--card-border);
+    border-radius: 999px;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+
+    i {
+      color: var(--text-muted);
+      transition: color 0.15s ease;
+    }
+
+    &:hover {
+      color: var(--accent);
+      text-decoration: none;
+      background: var(--accent-soft);
+      border-color: var(--accent-border);
+
+      i {
+        color: var(--accent);
+      }
+    }
+  }
+}
+
+/* Equal-contribution marker: a small superscript like most academic pages use; the legend sits in the
+   section heading in small muted text, not as a line of its own. The legend uses the centred asterisk
+   (U+2217): a plain "*" rides high and crowds the opening parenthesis. */
+.publication-eq {
+  margin-left: 0.05em;
+  font-size: 0.75em;
+  line-height: 0;
+  color: var(--text-muted);
+  cursor: help;
+}
+
+.publication-legend {
+  margin-left: 0.5em;
+  font-size: 0.6em;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--text-muted);
+}
+
+/* Narrow screens: the figure goes on top, full width, instead of squeezing the text into a column. */
+@media (max-width: 640px) {
+  .publication-card {
+    flex-direction: column;
+    gap: 0.8em;
+    padding: 0.85em;
+  }
+
+  .publication-image {
+    flex: none;
+    width: 100%;
+  }
 }

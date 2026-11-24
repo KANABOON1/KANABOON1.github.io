@@ -13,9 +13,9 @@ $background                 : #2b2b2b;
 $background-light           : mix(#fff, $background, 70%); 
 $background-lighter         : mix(#fff, $background, 85%); 
 $text                       : #ffffff;
-$link                       : #0ea1c5;
-$link-dark                  : mix(#000, $link, 25%);
-$link-light                 : mix(#fff, $link, 25%);
+$link                       : #7fb0ff;
+$link-dark                  : mix(#fff, $link, 30%);
+$link-light                 : $link;
 
 /* Color codes used for the site */
 $danger-color               : #ee5f5b;
@@ -56,4 +56,14 @@ html[data-theme="dark"] {
     --global-text-color-light           : #{$light-gray};
     --global-thead-color                : #{$background-lighter};
     --global-card-color                 : #{$card-bg-color};
+
+    --accent                            : #7fb0ff;
+    --accent-soft                       : rgba(127, 176, 255, 0.13);
+    --accent-border                     : rgba(127, 176, 255, 0.4);
+    --highlight-fg                      : #fbbf24;
+    --highlight-bg                      : rgba(251, 191, 36, 0.14);
+    --text-muted                        : #b3b8bd;
+    --card-border                       : #474747;
+    --card-shadow                       : none;
+    --card-shadow-hover                 : 0 6px 18px rgba(0, 0, 0, 0.35);
 }

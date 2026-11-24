@@ -1,0 +1,7 @@
+{% comment %} One chronological list, newest first; the venue badge on each card tells preprints from
+conference papers, so the list is not split by category. Rendered on the home page. {% endcomment %}
+<div class="publication-list">
+  {% for post in site.publications reversed %}
+    {% include archive-single.html %}
+  {% endfor %}
+</div>

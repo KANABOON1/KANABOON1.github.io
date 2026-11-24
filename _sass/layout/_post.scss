@@ -1,0 +1,60 @@
+/* ==========================================================================
+   BLOG POST PAGES
+   ========================================================================== */
+
+/* Header: date and reading time on one line under the title, tags as pills below it. */
+.page__inner-wrap > header {
+  .page__date {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3em 1.2em;
+    margin: 0.3em 0 0.7em;
+    font-size: 0.9em;
+    color: var(--text-muted);
+
+    i {
+      margin-right: 0.4em;
+      opacity: 0.8;
+    }
+  }
+
+  /* The theme sets this footer at 0.75em, which made the tag pills tiny. */
+  .page__meta {
+    margin-top: 0;
+    font-size: 0.9em;
+  }
+
+  .page__taxonomy {
+    margin: 0 0 0.4em;
+
+    strong,
+    .sep {
+      display: none;
+    }
+  }
+
+  .page__taxonomy-item {
+    display: inline-block;
+    margin: 0 0.4em 0.4em 0;
+    padding: 0.1em 0.7em;
+    border-radius: 999px;
+    font-size: 0.85em;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+}
+
+/* The theme sets captions in serif; posts use the body font, muted. */
+.page__content figcaption {
+  font-family: inherit;
+  color: var(--text-muted);
+}
+
+/* A display equation wider than a phone scrolls inside its own box instead of widening the whole page. */
+mjx-container[display="true"] {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.15em 0;
+}

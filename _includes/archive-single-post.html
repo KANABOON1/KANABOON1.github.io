@@ -16,17 +16,8 @@
       </p>
 
       <p class="blog-meta">
-        <span class="meta-item">
-          Date: {{ post.date | date: "%B %d, %Y" }}
-        </span>
-        |
-        <span class="meta-item">
-          Estimated Reading Time: {{ post.read_time }} min
-        </span>
-        |
-        <span class="meta-item">
-          Author: {{ post.author }}
-        </span>
+        <span class="meta-item"><i class="fas fa-calendar-days" aria-hidden="true"></i>{{ post.date | date: "%B %d, %Y" }}</span>
+        <span class="meta-item"><i class="fas fa-clock" aria-hidden="true"></i>{{ post.read_time }} min read</span>
       </p>
     </div>
 </div>

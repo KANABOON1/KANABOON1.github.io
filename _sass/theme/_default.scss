@@ -37,13 +37,24 @@ $card-bg-color: rgba(255, 255, 255, 0.9);
     --global-code-background-color      : #fafafa;
     --global-code-text-color            : #{$darker-gray};
     --global-fig-caption-color          : mix(#fff,  #{$dark-gray}, 25%);
-    --global-link-color                 : #52adc8;
-    --global-link-color-hover           : mix(#000, #2f7f93, 25%);
-    --global-link-color-visited         : mix(#fff, #2f7f93, 25%);  
+    --global-link-color                 : #2563eb;
+    --global-link-color-hover           : #1d4ed8;
+    --global-link-color-visited         : #2563eb;
     --global-masthead-link-color        : #{$dark-gray};
     --global-masthead-link-color-hover  : mix(#000, #{$gray}, 25%);    
     --global-text-color                 : #{$dark-gray};
     --global-text-color-light           : #{$light-gray};
     --global-thead-color                : #{$lighter-gray};
     --global-card-color                 : #{$card-bg-color};
+
+    /* accents for the home page, publication and blog cards */
+    --accent                            : #2563eb;
+    --accent-soft                       : rgba(37, 99, 235, 0.08);
+    --accent-border                     : rgba(37, 99, 235, 0.28);
+    --highlight-fg                      : #b45309;
+    --highlight-bg                      : rgba(245, 158, 11, 0.14);
+    --text-muted                        : #6b7178;
+    --card-border                       : #e6e8eb;
+    --card-shadow                       : 0 1px 2px rgba(16, 24, 40, 0.04);
+    --card-shadow-hover                 : 0 6px 18px rgba(16, 24, 40, 0.08);
 }

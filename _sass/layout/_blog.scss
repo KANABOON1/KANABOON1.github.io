@@ -1,84 +1,61 @@
-/* --- SCSS for Blog Card Layout (MODIFIED to look like .publication-card) --- */
+/* ==========================================================================
+   BLOG CARDS (/year-archive/), same card language as the publication cards
+   ========================================================================== */
 
 .blog-card {
-  // 核心卡片样式：模仿 .publication-card
-  background: var(--global-card-color, #ffffff);
-  border: 1px solid var(--global-card-color, #e0e0e0);
+  margin: 0 0 0.9em;
+  padding: 1em 1.15em;
+  background: var(--global-card-color);
+  border: 1px solid var(--card-border);
   border-radius: 12px;
-  padding: 10px; // 采用与 .publication-card 相同的内边距
-  margin: 10px 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.3s ease;
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 
-  // 悬停效果：模仿 .publication-card
   &:hover {
-    transform: none; // 移除原先的 translateY(-2px) 浮动效果
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12); // 采用相同的悬停阴影
-  }
-
-  // 确保卡片内的链接样式被覆盖
-  .blog-link-wrapper {
-    display: block;
-    text-decoration: none;
-    color: inherit;
+    border-color: var(--accent-border);
+    box-shadow: var(--card-shadow-hover);
   }
 }
 
-.blog-content {
-  // 移除 card-padding，因为 padding 已经在 .blog-card 上设置了
-  padding: 0; 
-}
-
-// --- 标题样式 ---
 .blog-title {
-  // 模仿 .publication-title
-  font-size: 1rem; // 调整为更小
-  font-weight: bold;
-  line-height: 1.2;
-  color: var(--global-text-color, #2c3e50);
-  margin-top: -2px; 
-  margin-bottom: 10px; // 采用与 .publication-title 相同的紧凑间距
-  font-family: "Times New Roman", Times, serif;
+  margin: 0 0 0.4em;
+  font-size: 1.1em;
+  font-weight: 600;
+  line-height: 1.35;
 
-  a {
+  a,
+  .archive & a {
+    color: var(--global-text-color);
     text-decoration: none;
-    color: var(--global-text-color, #2c3e50);
+
     &:hover {
-      color: var(--global-link-color-hover, #007acc);
+      color: var(--accent);
+      text-decoration: none;
     }
   }
 }
 
-// --- 摘要/简介样式 ---
 .blog-excerpt {
-  // 模仿出版物元信息的字体大小，但使用更柔和的颜色
-  font-size: 0.7rem; 
-  color: var(--global-text-color-light, #555);
-  line-height: 1.4;
-  margin-bottom: 5px; // 采用一个适中的间距
-  margin-top: 2px; // 紧凑排版
+  margin: 0 0 0.6em;
+  font-size: 0.9em;
+  line-height: 1.6;
+  color: var(--text-muted);
 }
 
-// --- 元信息样式 (日期, 阅读时间, 作者) ---
 .blog-meta {
-  // 模仿 .publication-authors / .publication-venue 的样式
-  font-size: 0.8rem;
-  color: var(--global-text-color-light, #555); // 调整颜色使其柔和
-  margin-top: 2px;
-  margin-bottom: -2px; // 底部留白更少
-  font-family: "Times New Roman", Times, serif;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35em 1.1em;
+  margin: 0;
+  font-size: 0.82em;
+  color: var(--text-muted);
 
   .meta-item {
-    white-space: nowrap; 
+    white-space: nowrap;
   }
-}
 
-// 响应式设计 (可选：调整，保持一致性)
-@media (max-width: 768px) {
-  .blog-title {
-    font-size: 1rem;
-  }
-  .blog-card {
-    margin-bottom: 10px;
+  i {
+    margin-right: 0.4em;
+    opacity: 0.8;
   }
 }

@@ -42,7 +42,9 @@
     "vendor/magnific-popup/magnific-popup",
     
     "layout/publication",
-    "layout/blog"
+    "layout/blog",
+    "layout/home",
+    "layout/post"
 ;
 
 
@@ -66,27 +68,29 @@ body {
 /* markdown table of content */
 #markdown-toc {
   background: var(--global-card-color, #ffffff);
-  border: 1px solid var(--global-card-color, #e0e0e0);
+  border: 1px solid var(--card-border);
   border-radius: 12px;
-  padding: 8px 12px;
-  margin: 16px 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.3s ease;
+  padding: 0.9em 1.1em;
+  margin: 1.2em 0 1.6em;
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
   font-size: 0.9rem;
 
   &:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+    border-color: var(--accent-border);
+    box-shadow: var(--card-shadow-hover);
   }
 
   /* 目录标题 */
   &::before {
-    content: "Table of Contents";
+    content: "Contents";
     display: block;
-    font-weight: bold;
-    font-size: 0.95rem;
-    margin-bottom: 6px;
-    color: var(--global-text-color, #2c3e50);
-    font-family: "Times New Roman", Times, serif;
+    margin-bottom: 0.5em;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
   }
 
   /* 列表样式 */

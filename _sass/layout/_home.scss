@@ -1,0 +1,50 @@
+/* ==========================================================================
+   HOME PAGE: news list
+   ========================================================================== */
+
+/* Each item is "<span class="news-date">YYYY.MM</span> text"; the date sits in a fixed left column and
+   wrapped lines stay aligned with the text, not with the date. */
+.page__content .news-list {
+  margin: 0 0 1.6em;
+  padding: 0;
+  list-style: none;
+
+  li {
+    position: relative;
+    margin: 0;
+    padding: 0.4em 0 0.4em 5.4em;
+    line-height: 1.6;
+  }
+}
+
+.news-date {
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  padding: 0.05em 0.5em;
+  border-radius: 6px;
+  font-size: 0.84em;
+  font-weight: 700;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* Phones: no room for a date column, so the date chip leads the first line and the text wraps after it. */
+@media (max-width: 640px) {
+  .page__content .news-list li {
+    padding-left: 0;
+  }
+
+  .news-date {
+    position: static;
+    display: inline-block;
+    margin-right: 0.15em;
+  }
+}
+
+/* The brand-colored GitHub icon (#171516) disappears on the dark background. */
+html[data-theme="dark"] .social-icons .fa-github {
+  color: var(--global-text-color);
+}

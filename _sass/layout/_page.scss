@@ -16,17 +16,19 @@
   }
 }
 
-#main.home-page {
-  @include breakpoint($x-large) {
-    max-width: 1440px;
-  }
-}
-
 .page {
   @include breakpoint($large) {
     @include span(10 of 12 last);
     @include prefix(0.5 of 12);
     @include suffix(2 of 12);
+  }
+
+  /* The home page holds publication cards, so it takes the full width of the archive pages
+     (/publications/, /year-archive/) instead of keeping the right gutter of a blog post. */
+  #main.home-page & {
+    @include breakpoint($large) {
+      padding-right: 0;
+    }
   }
 
   .page__inner-wrap {
